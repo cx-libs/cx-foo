@@ -3,9 +3,12 @@
 #include <map>
 #include <memory>
 #include <iostream>
-#include <cx_foo.h>
+#include <cxfoo.h>
 
+using namespace std;
 
 int main() {
-  Foo::
+  auto foo = cxfoo::Foo::New("foo");
+  foo.HelloWorld();
+  cout << foo.name() << endl;
 }

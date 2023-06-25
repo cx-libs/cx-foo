@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include <memory>
-#include "cx_foo_export.h"
 
-namespace cx_foo {
+#include "cxfoo_export.h"
+
+namespace cxfoo {
 
 template <typename T>
 class SharedBase {
@@ -23,7 +25,9 @@ class SharedBase {
 class FooImpl;
 class Foo : public SharedBase<FooImpl> {
  public:
-  CX_FOO_EXPORT static Foo New();
+  CXFOO_EXPORT static Foo New(const std::string& name);
+  CXFOO_EXPORT void HelloWorld();
+  CXFOO_EXPORT std::string name();
 };
 
-}  // namespace cx_foo
+}  // namespace cxfoo

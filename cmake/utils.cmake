@@ -47,26 +47,26 @@ endfunction(utils_add_exec)
 
 
 function(utils_install)
-  cmake_parse_arguments(ARGS "" "EXPORT;CONFIG;VERSION" "TARGETS" ${ARGN})
+  cmake_parse_arguments(ARGS "" "PACKAGE;CONFIG;VERSION" "TARGETS" ${ARGN})
   message(STATUS "==== util_install ${ARGS_PACKAGE} ====")
-  message(STATUS "ARGS_EXPORT  : ${ARGS_EXPORT}")
+  message(STATUS "ARGS_PACKAGE : ${ARGS_PACKAGE}")
   message(STATUS "ARGS_VERSION : ${ARGS_VERSION}")
   message(STATUS "ARGS_CONFIG  : ${ARGS_CONFIG}")
   message(STATUS "ARGS_TARGETS : ${ARGS_TARGETS}")
 
-  install(TARGETS ${ARGS_TARGETS} EXPORT ${ARGS_EXPORT}
+  install(TARGETS ${ARGS_TARGETS} EXPORT ${ARGS_PACKAGE}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
           ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
           INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   
-  install(EXPORT ${ARGS_EXPORT} FILE ${ARGS_EXPORT}.cmake DESTINATION shared/${ARGS_EXPORT})
+  install(EXPORT ${ARGS_PACKAGE} FILE ${ARGS_PACKAGE}Targets.cmake DESTINATION shared/${ARGS_PACKAGE})
 
   include(CMakePackageConfigHelpers)
   configure_package_config_file(${ARGS_CONFIG}
     "${CMAKE_CURRENT_BINARY_DIR}/${ARGS_PACKAGE}Config.cmake"
-    INSTALL_DESTINATION shared/${ARGS_EXPORT}
+    INSTALL_DESTINATION shared/${ARGS_PACKAGE}
     NO_SET_AND_CHECK_MACRO
     NO_CHECK_REQUIRED_COMPONENTS_MACRO
   )
