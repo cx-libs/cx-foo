@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "cx_foo_export.h"
 
 namespace cx_foo {
 
