@@ -23,7 +23,7 @@ class SharedBase {
 class FooImpl;
 class Foo : public SharedBase<FooImpl> {
  public:
-  static Foo New();
+  CX_FOO_EXPORT static Foo New();
 };
 
 }  // namespace cx_foo
