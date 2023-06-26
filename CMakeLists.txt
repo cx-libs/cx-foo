@@ -5,19 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 
-include(cmake/utils.cmake)
+find_package(grpc)
 
-utils_add_lib(TARGET cxfoo 
-  TYPE SHARED
+include(cmake/utils.cmake)
+utils_add_lib(cxfoo SHARED
   SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/cxfoo
   INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/cxfoo)
 
-utils_add_exec(TARGET cxfoo_cli 
-  OUTPUT_NAME cxfoo
+utils_add_exec(cxfoo_cli OUTPUT_NAME cxfoo
   SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/cxfoo_cli
-  DEPS cxfoo)
+  DEPS    cxfoo)
 
-utils_install(PACKAGE cxfoo
+utils_install(${PROJECT_NAME} 
   VERSION ${PROJECT_VERSION}
-  CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
+  CONFIG  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
   TARGETS cxfoo cxfoo_cli)
