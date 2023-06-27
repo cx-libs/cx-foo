@@ -72,7 +72,7 @@ function(add_install ARG_PACKAGE)
           INCLUDES DESTINATION include
   )
 
-  install(EXPORT ${ARG_PACKAGE} FILE ${ARG_PACKAGE}.cmake DESTINATION shared/${ARG_PACKAGE})
+  install(EXPORT ${ARG_PACKAGE} FILE ${ARG_PACKAGE}Targets.cmake DESTINATION shared/${ARG_PACKAGE})
 
   include(CMakePackageConfigHelpers)
   configure_package_config_file(${ARG_CONFIG}
