@@ -1,4 +1,4 @@
-#include "cxfoo.h"
+#include <cxfoo/cxfoo.h>
 
 #include <iostream>
 

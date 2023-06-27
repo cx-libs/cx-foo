@@ -6,8 +6,10 @@
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "installDir": "${sourceDir}/out/install/${presetName}",
-      "cacheVariables": {}
+      "installDir": "${sourceDir}/out/install",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "D:\\Packages"
+      }
     },
     {
       "name": "windows-x64-debug",

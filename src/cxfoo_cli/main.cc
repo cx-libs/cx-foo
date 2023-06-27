@@ -3,7 +3,7 @@
 #include <map>
 #include <memory>
 #include <iostream>
-#include <cxfoo.h>
+#include <cxfoo/cxfoo.h>
 
 using namespace std;
 

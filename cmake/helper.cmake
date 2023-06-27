@@ -1,6 +1,6 @@
-function(utils_add_lib ARG_TARGET ARG_TYPE)
+function(add_lib ARG_TARGET ARG_TYPE)
   cmake_parse_arguments(ARG "" "SRC_DIR;INC_DIR;OUTPUT_NAME" "DEPS" ${ARGN})
-  message(STATUS "==== util_add_lib ====")
+  message(STATUS "==== add_lib ====")
   message(STATUS "TARGET      : ${ARG_TARGET}")
   message(STATUS "TYPE        : ${ARG_TYPE}")
   message(STATUS "SRC_DIR     : ${ARG_SRC_DIR}")
@@ -8,9 +8,8 @@ function(utils_add_lib ARG_TARGET ARG_TYPE)
   message(STATUS "DEPS        : ${ARG_DEPS}")
   message(STATUS "OUTPUT_NAME : ${ARG_OUTPUT_NAME}")
 
-  file(GLOB_RECURSE files ${ARG_SRC_DIR}/*.cc ${ARG_SRC_DIR}/*.h)
-  list(APPEND src_files ${files})
-
+  # Add lib
+  file(GLOB_RECURSE src_files ${ARG_SRC_DIR}/*.cc ${ARG_SRC_DIR}/*.cpp ${ARG_SRC_DIR}/*.c)
   add_library(${ARG_TARGET} ${ARG_TYPE} ${src_files})
   target_link_libraries(${ARG_TARGET} PRIVATE ${ARG_DEPS})
   target_include_directories(${ARG_TARGET} PUBLIC
@@ -22,15 +21,23 @@ function(utils_add_lib ARG_TARGET ARG_TYPE)
     set_property(TARGET ${ARG_TARGET} PROPERTY OUTPUT_NAME ${ARG_OUTPUT_NAME})
   endif(ARG_OUTPUT_NAME)
 
+  # Generate export header
   include(GenerateExportHeader)
-  generate_export_header(${ARG_TARGET})
+  generate_export_header(${ARG_TARGET} EXPORT_FILE_NAME "${ARG_INC_DIR}/${ARG_TARGET}/${ARG_TARGET}_export.h")
+
+  # Set headers set for install
+  file(GLOB_RECURSE inc_files ${ARG_INC_DIR}/*.h ${ARG_SRC_DIR}/*.hpp)
+  target_sources(${ARG_TARGET} PUBLIC FILE_SET HEADERS
+    BASE_DIRS ${ARG_INC_DIR}
+    FILES ${inc_files})
+  
   message(STATUS "Done")
-endfunction(utils_add_lib)
+endfunction(add_lib)
 
 
-function(utils_add_exec ARG_TARGET)
+function(add_exec ARG_TARGET)
   cmake_parse_arguments(ARG "" "SRC_DIR;OUTPUT_NAME" "DEPS" ${ARGN})
-  message(STATUS "==== util_add_exec ====")
+  message(STATUS "==== add_exec ====")
   message(STATUS "TARGET      : ${ARG_TARGET}")
   message(STATUS "SRC_DIR     : ${ARG_SRC_DIR}")
   message(STATUS "DEPS        : ${ARG_DEPS}")
@@ -46,24 +53,25 @@ function(utils_add_exec ARG_TARGET)
   endif(ARG_OUTPUT_NAME)
 
   message(STATUS "Done")
-endfunction(utils_add_exec)
+endfunction(add_exec)
 
 
-function(utils_install ARG_PACKAGE)
+function(add_install ARG_PACKAGE)
   cmake_parse_arguments(ARG "" "VERSION;CONFIG" "TARGETS" ${ARGN})
-  message(STATUS "==== util_install ====")
+  message(STATUS "==== install ====")
   message(STATUS "PACKAGE : ${ARG_PACKAGE}")
   message(STATUS "VERSION : ${ARG_VERSION}")
   message(STATUS "CONFIG  : ${ARG_CONFIG}")
   message(STATUS "TARGETS : ${ARG_TARGETS}")
 
   install(TARGETS ${ARG_TARGETS} EXPORT ${ARG_PACKAGE}
-          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          FILE_SET HEADERS
+          LIBRARY DESTINATION $<$<CONFIG:Debug>:debug>/lib
+          ARCHIVE DESTINATION $<$<CONFIG:Debug>:debug>/lib
+          RUNTIME DESTINATION $<$<CONFIG:Debug>:debug>/bin
           INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
-  
+
   install(EXPORT ${ARG_PACKAGE} FILE ${ARG_PACKAGE}.cmake DESTINATION shared/${ARG_PACKAGE})
 
   include(CMakePackageConfigHelpers)
@@ -87,4 +95,4 @@ function(utils_install ARG_PACKAGE)
   )
 
   message(STATUS "Done")
-endfunction(utils_install)
+endfunction(add_install)
