@@ -15,7 +15,7 @@ function(add_lib ARG_TARGET ARG_TYPE)
   target_include_directories(${ARG_TARGET} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
     "$<BUILD_INTERFACE:${ARG_INC_DIR}>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+    "$<INSTALL_INTERFACE:include>"
   )
   if (ARG_OUTPUT_NAME)
     set_property(TARGET ${ARG_TARGET} PROPERTY OUTPUT_NAME ${ARG_OUTPUT_NAME})
@@ -66,10 +66,10 @@ function(add_install ARG_PACKAGE)
 
   install(TARGETS ${ARG_TARGETS} EXPORT ${ARG_PACKAGE}
           FILE_SET HEADERS
-          LIBRARY DESTINATION $<$<CONFIG:Debug>:debug>/lib
-          ARCHIVE DESTINATION $<$<CONFIG:Debug>:debug>/lib
-          RUNTIME DESTINATION $<$<CONFIG:Debug>:debug>/bin
-          INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+          LIBRARY DESTINATION $<$<CONFIG:Debug>:debug/>lib
+          ARCHIVE DESTINATION $<$<CONFIG:Debug>:debug/>lib
+          RUNTIME DESTINATION $<$<CONFIG:Debug>:debug/>bin
+          INCLUDES DESTINATION include
   )
 
   install(EXPORT ${ARG_PACKAGE} FILE ${ARG_PACKAGE}.cmake DESTINATION shared/${ARG_PACKAGE})
