@@ -15,7 +15,7 @@ function(add_lib ARG_TARGET ARG_TYPE)
   target_include_directories(${ARG_TARGET} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
     "$<BUILD_INTERFACE:${ARG_INC_DIR}>"
-    "$<INSTALL_INTERFACE:include>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
   )
   if (ARG_OUTPUT_NAME)
     set_property(TARGET ${ARG_TARGET} PROPERTY OUTPUT_NAME ${ARG_OUTPUT_NAME})
@@ -23,7 +23,7 @@ function(add_lib ARG_TARGET ARG_TYPE)
 
   # Generate export header
   include(GenerateExportHeader)
-  generate_export_header(${ARG_TARGET} EXPORT_FILE_NAME "${ARG_INC_DIR}/${ARG_TARGET}/${ARG_TARGET}_export.h")
+  generate_export_header(${ARG_TARGET})
 
   # Set headers set for install
   file(GLOB_RECURSE inc_files ${ARG_INC_DIR}/*.h ${ARG_SRC_DIR}/*.hpp)
@@ -57,41 +57,41 @@ endfunction(add_exec)
 
 
 function(add_install ARG_PACKAGE)
-  cmake_parse_arguments(ARG "" "VERSION;CONFIG" "TARGETS" ${ARGN})
+cmake_parse_arguments(ARG "" "VERSION;CONFIG" "TARGETS" ${ARGN})
   message(STATUS "==== install ====")
   message(STATUS "PACKAGE : ${ARG_PACKAGE}")
   message(STATUS "VERSION : ${ARG_VERSION}")
   message(STATUS "CONFIG  : ${ARG_CONFIG}")
   message(STATUS "TARGETS : ${ARG_TARGETS}")
 
+  # Export targets
+  include(GNUInstallDirs)
   install(TARGETS ${ARG_TARGETS} EXPORT ${ARG_PACKAGE}
           FILE_SET HEADERS
-          LIBRARY DESTINATION $<$<CONFIG:Debug>:debug/>lib
-          ARCHIVE DESTINATION $<$<CONFIG:Debug>:debug/>lib
-          RUNTIME DESTINATION $<$<CONFIG:Debug>:debug/>bin
-          INCLUDES DESTINATION include
-  )
+          LIBRARY DESTINATION   "$<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_LIBDIR}"
+          ARCHIVE DESTINATION   "$<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_LIBDIR}"
+          RUNTIME DESTINATION   "$<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_BINDIR}"
+          INCLUDES DESTINATION  "${CMAKE_INSTALL_INCLUDEDIR}")
 
-  install(EXPORT ${ARG_PACKAGE} FILE ${ARG_PACKAGE}Targets.cmake DESTINATION shared/${ARG_PACKAGE})
+  install(EXPORT ${ARG_PACKAGE}
+          FILE        "${ARG_PACKAGE}Targets.cmake"
+          DESTINATION "${CMAKE_INSTALL_DATADIR}/${ARG_PACKAGE}")
 
+  # Export config
   include(CMakePackageConfigHelpers)
-  configure_package_config_file(${ARG_CONFIG}
-    "${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}Config.cmake"
-    INSTALL_DESTINATION share/${ARG_PACKAGE}
-    NO_SET_AND_CHECK_MACRO
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
-  )
+  configure_package_config_file(${ARG_CONFIG} "${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}Config.cmake"
+                                INSTALL_DESTINATION  "${CMAKE_INSTALL_DATADIR}/${ARG_PACKAGE}"
+                                NO_SET_AND_CHECK_MACRO
+                                NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
-  write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}ConfigVersion.cmake
-    VERSION ${ARG_VERSION}
-    COMPATIBILITY AnyNewerVersion
-  )
+  write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}ConfigVersion.cmake"
+                                   VERSION ${ARG_VERSION}
+                                   COMPATIBILITY AnyNewerVersion)
 
   install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}Config.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}ConfigVersion.cmake
-    DESTINATION shared/${ARG_PACKAGE}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/${ARG_PACKAGE}
   )
 
   message(STATUS "Done")

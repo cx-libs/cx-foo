@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 int main() {
   auto foo = cxfoo::Foo::New("foo");
   foo.HelloWorld();
