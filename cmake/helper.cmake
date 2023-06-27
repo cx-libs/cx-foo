@@ -77,14 +77,14 @@ function(add_install ARG_PACKAGE)
   include(CMakePackageConfigHelpers)
   configure_package_config_file(${ARG_CONFIG}
     "${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}Config.cmake"
-    INSTALL_DESTINATION shared/${ARG_PACKAGE}
+    INSTALL_DESTINATION share/${ARG_PACKAGE}
     NO_SET_AND_CHECK_MACRO
     NO_CHECK_REQUIRED_COMPONENTS_MACRO
   )
 
   write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}ConfigVersion.cmake"
-    VERSION "0.0.1"
+    ${CMAKE_CURRENT_BINARY_DIR}/${ARG_PACKAGE}ConfigVersion.cmake
+    VERSION ${ARG_VERSION}
     COMPATIBILITY AnyNewerVersion
   )
 
