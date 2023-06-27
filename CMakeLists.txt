@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 
-find_package(grpc)
+find_package(gRPC REQUIRED)
+
 
 include(cmake/helper.cmake)
 add_lib(cxfoo SHARED
@@ -14,7 +15,7 @@ add_lib(cxfoo SHARED
 
 add_exec(cxfoo_cli OUTPUT_NAME cxfoo
   SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/cxfoo_cli
-  DEPS    cxfoo)
+  DEPS    cxfoo gRPC::grpc++)
 
 add_install(${PROJECT_NAME} 
   VERSION ${PROJECT_VERSION}
