@@ -3,9 +3,9 @@
 #include <string>
 #include <memory>
 
-#include "cxfoo_export.h"
+#include "cx_foo_export.h"
 
-namespace cxfoo {
+namespace cx::foo {
 
 template <typename T>
 class SharedBase {
@@ -25,9 +25,9 @@ class SharedBase {
 class FooImpl;
 class Foo : public SharedBase<FooImpl> {
  public:
-  CXFOO_EXPORT static Foo New(const std::string& name);
-  CXFOO_EXPORT void HelloWorld();
-  CXFOO_EXPORT std::string name();
+  CX_FOO_EXPORT static Foo New(const std::string& name);
+  CX_FOO_EXPORT void HelloWorld();
+  CX_FOO_EXPORT std::string name();
 };
 
-}  // namespace cxfoo
+}  // namespace cx::foo

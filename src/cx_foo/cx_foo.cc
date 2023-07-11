@@ -1,8 +1,8 @@
-#include <cxfoo/cxfoo.h>
+#include <cx_foo/cx_foo.h>
 
 #include <iostream>
 
-namespace cxfoo {
+namespace cx::foo {
 
 class FooImpl {
  public:
@@ -21,4 +21,4 @@ Foo Foo::New(const std::string& name) { return Foo{std::make_shared<FooImpl>(nam
 void Foo::HelloWorld() { return impl->HelloWorld(); }
 std::string Foo::name() { return impl->name; }
 
-}  // namespace cxfoo
+}  // namespace cx::foo

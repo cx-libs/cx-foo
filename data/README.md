@@ -1,0 +1,1 @@
+Project data files include config and images.
