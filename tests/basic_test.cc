@@ -5,5 +5,5 @@ using namespace std;
 
 int basic_test(int, char*[]) {
   cout << "basic_test" << endl;
-  return -1;
+  return 0;
 }

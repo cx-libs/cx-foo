@@ -1,3 +1,13 @@
+macro(find_pkg pack_name)
+  message(STATUS "==== find_pkg ====")
+  find_package(${pack_name} CONFIG REQUIRED)
+  message(STATUS "prefix path   : ${CMAKE_PREFIX_PATH}")
+  message(STATUS "include dirs  : ${${pack_name}_INCLUDE_DIRS}")
+  message(STATUS "libs          : ${${pack_name}_LIBS}")
+  message(STATUS "config        : ${${pack_name}_DIR}")
+  message(STATUS "version       : ${${pack_name}_VERSION}")
+endmacro()
+
 function(add_lib ARG_TARGET ARG_TYPE)
   cmake_parse_arguments(ARG "" "SRC_DIR;INC_DIR;OUTPUT_NAME" "DEPS" ${ARGN})
   message(STATUS "==== add_lib ====")

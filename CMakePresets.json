@@ -9,6 +9,7 @@
       "installDir": "${sourceDir}/out/install/${presetName}",
       "cacheVariables": {
         "CMAKE_PREFIX_PATH": "$env{CMAKE_PREFIX_PATH}",
+        "CMAKE_FIND_ROOT_PATH_MODE_PACKAGE": "NEVER",
         "CMAKE_FIND_PACKAGE_PREFER_CONFIG": true,
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin"
       }
